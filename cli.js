@@ -3,14 +3,24 @@ const execSync = require('child_process').execSync
 const asciiChart = require('asciichart')
 const Chartscii = require('chartscii')
 
+const black= '\u001b[30m'
+const red= '\u001b[31m'
+const green= '\u001b[32m'
+const yellow= '\u001b[33m'
+const blue= '\u001b[34m'
+const magenta= '\u001b[35m'
+const cyan= '\u001b[36m'
+const white= '\u001b[37m'
+const reset= '\u001b[0m'
+
 let usage = `
-\x1b[33m
+${yellow}
 [ Usage ]
-\x1b[0m
+${reset}
 	npm-search <npm module search term> [--debug --days <int>]
-\x1b[33m
+${yellow}
 [ Info ]
-\x1b[0m
+${reset}
 npm-search module
 
 This module is designed to visually display relevant statistics about
@@ -53,31 +63,38 @@ let resp = execSync(req)
 resp = resp.toString('utf8') // buff to string
 resp = JSON.parse(resp)
 
+log(resp)
+
 // parse package scores
 let matches = []
 for (i=0; i<resp.results.length; i++) {
 	let item = resp.results[i]
 	matches[i] = {}
 	matches[i]['name'] = item.package.name
+	let total = item.score.final * 100 | 0
+	let searchScore = item.searchScore * 100 | 0
+	let quality = item.score.detail.quality * 100 | 0
+	let popularity = item.score.detail.popularity * 100 | 0
+	let maintenance = item.score.detail.maintenance * 100 | 0
 	matches[i]['scores'] = [{
-			label: "Total",
-			value: item.score.final * 1000 | 0
+			label: `Total ${total}`,
+			value: total
 		},
 		{
-			label: "Search",
-			value: item.searchScore * 1000 | 0
+			label: `Search ${searchScore}`,
+			value: searchScore
 		},
 		{
-			label: "Quality",
-			value: item.score.detail.quality * 1000 | 0
+			label: `Quality ${quality}`,
+			value: quality
 		},
 		{
-			label: "Popularity",
-			value: item.score.detail.popularity * 1000 | 0
+			label: `Popularity ${popularity}`,
+			value: popularity
 		},
 		{
-			label: "Maintenance",
-			value: item.score.detail.maintenance * 1000 | 0
+			label: `Maintenance ${maintenance}`,
+			value: maintenance
 		}
 	]
 	log(matches[i])
@@ -88,12 +105,12 @@ matches.forEach((package) => {
 	// print package scores
 	let options = {
 	    label: package.name,
-	    theme: 'pastel',
+	    // theme: 'pastel',
 	    width: 50,
-	    char: '■',
+	    // char: '■',
 	    sort: true,
 	    reverse: true,
-	    color: 'blue'
+	    color: yellow
 	}
 	const chart = new Chartscii(package.scores, options)
 	console.log(chart.create(), package.name)
@@ -126,12 +143,15 @@ matches.forEach((package) => {
 
 	log(npmjsResp)
 	
-	let data = []
-	for (i=0; i<npmjsResp.downloads.length; i++) {
-		data[i] = npmjsResp.downloads[i].downloads
-	}
+	let total = 0
+	let data = npmjsResp.downloads.map((entry) => {
+		total += entry.downloads
+		return entry.downloads
+	})
+	let average = Math.round(total / data.length)
 	
-	console.log("    \x1b[33mDaily downloads since " + startDate + "\x1b[0m")
+	console.log(`${yellow}Daily downloads since ${startDate}${reset}`)
+	console.log(`    ${blue}Average : ${average}${reset}`)
 	console.log(asciiChart.plot(data, {height: 10}))
 	console.log("\n\n")
 	allData.push(data)
