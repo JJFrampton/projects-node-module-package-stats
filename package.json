@@ -1,0 +1,22 @@
+{
+  "name": "package-stats",
+  "version": "1.0.0",
+  "description": "Utility to guage support and popularity of npm packages",
+  "main": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "popularity",
+    "downloads"
+  ],
+  "author": "Joseph James Frampton",
+  "license": "ISC",
+  "bin": {
+    "npm-search": "./cli.js"
+  },
+  "dependencies": {
+    "asciichart": "^1.5.25",
+    "chartscii": "^1.3.2"
+  }
+}
