@@ -7,7 +7,7 @@ let usage = `
 \x1b[33m
 [ Usage ]
 \x1b[0m
-	npm-search <npm module search term> [--debug]
+	npm-search <npm module search term> [--debug --days <int>]
 \x1b[33m
 [ Info ]
 \x1b[0m
