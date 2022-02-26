@@ -17,3 +17,8 @@ This module is comprised of two data sources:
 
 ### Uninstall
 ```npm uninstall -g package-stats```
+
+### Example Usage and Results
+```npm-search socket```
+
+<img width="933" alt="Screen Shot 2022-02-25 at 11 56 40 PM" src="https://user-images.githubusercontent.com/7301152/155833427-1a4d471f-e3b2-4c0d-a0de-d3e3e0d1039c.png">
