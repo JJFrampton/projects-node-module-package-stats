@@ -83,10 +83,6 @@ for (i=0; i<resp.results.length; i++) {
 			value: total
 		},
 		{
-			label: `Search ${searchScore}`,
-			value: searchScore
-		},
-		{
 			label: `Quality ${quality}`,
 			value: quality
 		},
@@ -99,6 +95,7 @@ for (i=0; i<resp.results.length; i++) {
 			value: maintenance
 		}
 	]
+	matches[i]['searchScore'] = searchScore
 	log(matches[i])
 }
 
@@ -119,8 +116,11 @@ matches.forEach((package) => {
 	console.log(`${yellow}${titleSeparator}${reset}`)
 	console.log(`${yellow}${package.name.toUpperCase()}${reset}`)
 	console.log(`${yellow}${titleSeparator}${reset}`)
-	const chart = new Chartscii(package.scores, options)
-	console.log(chart.create(), package.name)
+	// const searchChart = new Chartscii(package.search, {...options, label: "Search Scores"})
+	// console.log(searchChart.create())
+	console.log(`${bright}${magenta}Search Score ${red}${package.searchScore}${reset}`)
+	const scoreChart = new Chartscii(package.scores, options)
+	console.log(scoreChart.create())
 
 	// get and print historical downloads
 	let date = new Date(Date.now())
