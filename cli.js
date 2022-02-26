@@ -151,15 +151,40 @@ matches.forEach((package) => {
 	log(npmjsResp)
 	
 	let total = 0
+	let modeCount = {}
+	let maxIndex = 0
 	let data = npmjsResp.downloads.map((entry) => {
-		total += entry.downloads
-		return entry.downloads
+		let dls = entry.downloads
+		total += dls
+		if (modeCount[dls]) {
+			modeCount[dls] +=1
+			if (modeCount[dls] > maxIndex) { maxIndex = modeCount[dls] }
+		} else {
+			modeCount[dls] = 1
+		}
+		return dls
 	})
-	let average = Math.round(total / data.length)
+	data = data.sort((a, b) => { return a - b })
+	let mean = Math.round(total / data.length)
+	let ln = data.length
+	let median
+	if (ln % 2 === 0) { // even
+		median = (data[ln / 2 - 1] + data[ln / 2]) / 2; // take average of both
+	} else { // odd
+		median = data[(ln - 1) / 2]
+	}
+	let mode = []
+	for (const [key, value] of Object.entries(modeCount)) {
+		if (value === maxIndex) { mode.push(key) }
+	}
+	let range = data[ln-1] - data[0]
 	
 	console.log(`${bright}${magenta}Downloads from ${startDate} to ${endDate}${reset}`)
-	console.log(`Daily Average   : ${red}${average}${reset}`)
-	console.log(`Daily downloads : `)
+	console.log(`       Mean ${red}${mean}${reset}`)
+	console.log(`     Median ${red}${median}${reset}`)
+	console.log(`       Mode ${red}${mode.length > 0 ? mode : "NA"}${reset}`)
+	console.log(`      Range ${red}${range}${reset}`)
+	console.log(`  Downloads :`)
 	console.log(asciiChart.plot(data, {height: 10}))
 	console.log("\n\n")
 	allData.push(data)
