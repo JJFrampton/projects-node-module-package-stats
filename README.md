@@ -21,4 +21,5 @@ This module is comprised of two data sources:
 ### Example Usage and Results
 ```npm-search socket```
 
-<img width="933" alt="Screen Shot 2022-02-25 at 11 56 40 PM" src="https://user-images.githubusercontent.com/7301152/155833427-1a4d471f-e3b2-4c0d-a0de-d3e3e0d1039c.png">
+<img width="804" alt="Screen Shot 2022-02-26 at 12 24 57 AM" src="https://user-images.githubusercontent.com/7301152/155834280-0cc29ac2-bfd5-4b0c-8449-7a023760aad2.png">
+
