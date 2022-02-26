@@ -12,6 +12,8 @@ const magenta= '\u001b[35m'
 const cyan= '\u001b[36m'
 const white= '\u001b[37m'
 const reset= '\u001b[0m'
+const bright = '\x1b[1m'
+const dim = '\x1b[2m'
 
 let usage = `
 ${yellow}
@@ -104,14 +106,19 @@ let allData = []
 matches.forEach((package) => {
 	// print package scores
 	let options = {
-	    label: package.name,
-	    // theme: 'pastel',
+	    label: 'Percentage Scores',
+	    theme: 'pastel',
 	    width: 50,
 	    // char: '■',
 	    sort: true,
-	    reverse: true,
-	    color: yellow
+	    // reverse: true,
+	    color: `${bright}${magenta}`
 	}
+	console.log()
+	let titleSeparator = new Array(66 + 1).join('=')
+	console.log(`${yellow}${titleSeparator}${reset}`)
+	console.log(`${yellow}${package.name.toUpperCase()}${reset}`)
+	console.log(`${yellow}${titleSeparator}${reset}`)
 	const chart = new Chartscii(package.scores, options)
 	console.log(chart.create(), package.name)
 
@@ -150,8 +157,9 @@ matches.forEach((package) => {
 	})
 	let average = Math.round(total / data.length)
 	
-	console.log(`${yellow}Daily downloads since ${startDate}${reset}`)
-	console.log(`    ${blue}Average : ${average}${reset}`)
+	console.log(`${bright}${magenta}Downloads from ${startDate} to ${endDate}${reset}`)
+	console.log(`Daily Average   : ${red}${average}${reset}`)
+	console.log(`Daily downloads : `)
 	console.log(asciiChart.plot(data, {height: 10}))
 	console.log("\n\n")
 	allData.push(data)
